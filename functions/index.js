@@ -62,7 +62,6 @@ async function captcha(page) {
         // on request inside listing page
         if (reqUrl.search(/FullRenderQuery/g)  != -1) {
             req.continue()
-            console.log('Stop loading window')
             page.evaluate(() => window.stop())
         }
         else req.continue()
@@ -80,7 +79,6 @@ async function captcha(page) {
 
         // on response inside listing page
         if (resUrl.search(/FullRenderQuery/g)  != -1) {
-            //await page.evaluate(() => window.stop())
             const response = await res.json()
             // serialize property info and push to arr
             await listings.push(serializeProperty(response))
@@ -94,10 +92,9 @@ async function captcha(page) {
 
             console.log('Im getting to this point')
 
-            /* while loop of next page if exists */
+            // while loop of next page if exists
             while (morePages) {
                 let response = await res.json()
-                //let nextPage = response.searchList.pagination.nextUrl
                 let nextPage = url + (++pageNum) + '_p/'
                 console.log('current page:', page.url())
                 console.log('next url:', nextPage)
@@ -156,3 +153,14 @@ async function captcha(page) {
 process.on('unhandledRejection', (reason, promise) => {
     console.log('Unhandled Rejection:', reason.message);
 })
+
+/* 
+    ISSUE: 
+    going back to browse page to get next list of 
+    listings is triggering event listener for that response
+
+    HOW TO FIX:
+    - First loop all pages > get all listing hrefs > push to array
+    - Then loop all listing hrefs in array > scrape data
+    - return scraped data in array 
+*/ 
