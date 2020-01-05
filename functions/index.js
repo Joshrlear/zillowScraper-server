@@ -1,8 +1,9 @@
 //const functions = require('firebase-functions')
 const puppeteer = require('puppeteer-extra')
 const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
+const HashMap = require('hashmap')
 const fetch = require('node-fetch')
-const now = require("performance-now");
+const now = require("performance-now")
 
 
 
@@ -31,6 +32,26 @@ async function captcha(page) {
 }
 
 
+async function goToListings(page, links) {
+    const allLinks = links.join().split(',')
+
+    for (link of allLinks) {
+        
+        try {
+            await captcha(page)
+        }
+        catch {
+            //await console.log('Going to this listing:', link)
+            await page.goto(link, {waituntil: 'domcontentloaded'})
+            /* await Promise.all([
+                page.waitForNavigation(),
+                page.goto(link)
+            ]) */
+        }
+    }
+}
+
+
 
 (async () => {
     
@@ -56,7 +77,7 @@ async function captcha(page) {
     let url = "https://www.zillow.com/homes/92019/"
 
 
-    await page.setRequestInterception(true)
+    /* await page.setRequestInterception(true)
     page.on('request', req => {
         const reqUrl = req.url()
         // on request inside listing page
@@ -65,57 +86,42 @@ async function captcha(page) {
             page.evaluate(() => window.stop())
         }
         else req.continue()
-    })
+    }) */
 
 
-    let listings = []
-    let links;
+    //let listings = []
+    const listings = new HashMap()
+    let links = []
     let morePages = true
     let pageNum = 1
+
     // setup response intercepts
     page.on('response', async res => {
         const resUrl = res.url()
 
 
-        // on response inside listing page
+        // gather listing info
         if (resUrl.search(/FullRenderQuery/g)  != -1) {
             const response = await res.json()
-            // serialize property info and push to arr
-            await listings.push(serializeProperty(response))
+            await listings.set(serializeProperty(response)) // TODO: need to set the key by address
+            await console.log(listings.toArray())
         }
 
 
 
         // on response inside main page        
         else if (resUrl.search(/GetSearchPageState/g) != -1) {
-            //++count
 
-            console.log('Im getting to this point')
+            // get pages
+            do {     
 
-            // while loop of next page if exists
-            while (morePages) {
-                let response = await res.json()
-                let nextPage = url + (++pageNum) + '_p/'
-                console.log('current page:', page.url())
-                console.log('next url:', nextPage)
-                
-
-                links = await page.$$eval(
+                links.push(await page.$$eval(
                         '.list-card-info', 
                         e => e.map(link => link.href))
-    
-                for (link of links) {
-                    
-                    try {
-                        await captcha(page)
-                    }
-                    catch {
-                        await console.log('Going to this listing:', link)
-                        await page.goto(link)
-                    }
-                    
-                }
-                console.log('logging here')
+                )
+
+                let nextPage = url + (++pageNum) + '_p/'   
+
                 await Promise.all([
                     page.waitForNavigation(),
                     page.goto(nextPage)
@@ -126,7 +132,12 @@ async function captcha(page) {
                 })
                 
             }
+            while (page.url() !== url)
 
+
+
+            // go to listings
+            await goToListings(page, links)
 
             await browser.close()
             await console.log(listings)

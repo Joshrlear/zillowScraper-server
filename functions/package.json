@@ -16,6 +16,8 @@
     "firebase-admin": "^8.6.0",
     "firebase-functions": "^3.3.0",
     "fs": "0.0.1-security",
+    "hashmap": "^2.4.0",
+    "hashset": "0.0.6",
     "node-fetch": "^2.6.0",
     "performance-now": "^2.1.0",
     "puppeteer": "^2.0.0",
