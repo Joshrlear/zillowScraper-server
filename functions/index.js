@@ -9,8 +9,10 @@ const now = require("performance-now")
 
 const serializeProperty = info => {
     const { data } = info
-        return ({
-            address:        data.property.address.streetAddress,
+    return ({
+        key: data.property.address.streetAddress,
+        value: 
+            {
             homeStatus:     data.property.homeStatus,
             price:          data.property.price,
             yearBuilt:      data.property.yearBuilt,
@@ -19,7 +21,9 @@ const serializeProperty = info => {
             livingArea:     data.property.livingArea,
             description:    data.property.description,
             daysOnZillow:   data.property.daysOnZillow
-        })
+            
+        }
+    })
 }
 
 async function captcha(page) {
@@ -41,12 +45,7 @@ async function goToListings(page, links) {
             await captcha(page)
         }
         catch {
-            //await console.log('Going to this listing:', link)
             await page.goto(link, {waituntil: 'domcontentloaded'})
-            /* await Promise.all([
-                page.waitForNavigation(),
-                page.goto(link)
-            ]) */
         }
     }
 }
@@ -77,20 +76,7 @@ async function goToListings(page, links) {
     let url = "https://www.zillow.com/homes/92019/"
 
 
-    /* await page.setRequestInterception(true)
-    page.on('request', req => {
-        const reqUrl = req.url()
-        // on request inside listing page
-        if (reqUrl.search(/FullRenderQuery/g)  != -1) {
-            req.continue()
-            page.evaluate(() => window.stop())
-        }
-        else req.continue()
-    }) */
-
-
-    //let listings = []
-    const listings = new HashMap()
+    const listings = new HashMap() // using map to ensure no dups
     let links = []
     let morePages = true
     let pageNum = 1
@@ -103,8 +89,9 @@ async function goToListings(page, links) {
         // gather listing info
         if (resUrl.search(/FullRenderQuery/g)  != -1) {
             const response = await res.json()
-            await listings.set(serializeProperty(response)) // TODO: need to set the key by address
-            await console.log(listings.toArray())
+            const { key, value } = serializeProperty(response)
+            await listings.set(key, value)
+            console.log(Array.from(listings))
         }
 
 
