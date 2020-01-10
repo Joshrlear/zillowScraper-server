@@ -153,12 +153,13 @@ process.on('unhandledRejection', (reason, promise) => {
 })
 
 /* 
-    ISSUE: 
-    going back to browse page to get next list of 
-    listings is triggering event listener for that response
+    NOTE: 
+    Look at updating the async/awaits use vid for example:
+    https://youtu.be/vn3tm0quoqE?t=466
+
+    For Future, consider using an observer to eliminate memory leaks
+    when looping through listings by unsubscribing to event listeners
 
     HOW TO FIX:
-    - First loop all pages > get all listing hrefs > push to array
-    - Then loop all listing hrefs in array > scrape data
-    - return scraped data in array 
+    Good video example: https://www.youtube.com/watch?v=Tux1nhBPl_w
 */ 
