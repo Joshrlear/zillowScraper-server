@@ -1,5 +1,5 @@
 node_modules/
 firebaseConfig.js
-2captchConfig.js
+2captchaConfig.js
 emailConfig.js
 .env
