@@ -63,7 +63,7 @@ async function goToListings(page, links) {
         RecaptchaPlugin({ 
           provider: {
             id: '2captcha',
-            token: require('./util/2captchaConfig').token
+            token: require('./configs/2captchaConfig').token
           },          
           visualFeedback: true // (violet = detected, green = solved)
         })

@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer')
-const { EMAIL, EMAILPASS, EMAILHOST } = require('./util/emailConfig')
+const { EMAIL, EMAILPASS, EMAILHOST } = require('./configs/emailConfig')
 const fs = require('fs')
 
 
