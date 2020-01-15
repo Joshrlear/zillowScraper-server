@@ -1,4 +1,3 @@
-//const functions = require('firebase-functions')
 const puppeteer = require('puppeteer-extra')
 const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
 const { csvGenerate } = require('./csvGenerate')
@@ -8,7 +7,6 @@ const { csvGenerate } = require('./csvGenerate')
 let listingResults = {}
 let links = []
 let pageNum = 1
-
 
 
 // add listing to existing obj or create new if doesn't exist
@@ -44,7 +42,6 @@ async function captcha(page) {
 
 async function goToListings(page, links) {
     const allLinks = links.join().split(',')
-    console.log('going to listings')
 
     for (link of allLinks) {
         
@@ -146,7 +143,10 @@ async function goToListings(page, links) {
 
 // default exceptions handling
 process.on('unhandledRejection', (reason, promise) => {
-    console.log('Unhandled Rejection:', reason.message);
+    if (reason.message !== "No node found for selector: #recaptcha-anchor") {
+        console.log('Unhandled Rejection:', reason.message)
+    }
+    
 })
 
 /* 

@@ -1,2 +1,4 @@
 node_modules/
 firebaseConfig.js
+emailConfig.js
+.env
