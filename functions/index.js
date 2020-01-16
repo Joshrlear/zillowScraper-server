@@ -31,8 +31,9 @@ const serializeProperty = (info, obj) => {
 }
 
 async function captcha(page) {
+
     await page.solveRecaptchas()
-    
+
     await Promise.all([
         page.waitForNavigation(),
         page.click(`#recaptcha-anchor`)

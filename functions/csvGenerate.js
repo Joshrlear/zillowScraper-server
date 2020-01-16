@@ -24,9 +24,9 @@ const csvGenerate = data => {
     const csv = json2csvParser.parse(info)
 
     fs.writeFile(
-        './destination.csv',            // save file as
-        csv,                            // file data
-        () => sendEmail('./destination.csv')  // after saved send email
+        './destination.csv',                    // save file as
+        csv,                                    // file data
+        () => sendEmail('./destination.csv')    // after saved send email
     )
 
 }
