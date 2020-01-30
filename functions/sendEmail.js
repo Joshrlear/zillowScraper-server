@@ -1,17 +1,19 @@
 const nodemailer = require('nodemailer')
-const { EMAIL, EMAILPASS, EMAILHOST } = require('./configs/emailConfig')
+const { email, emailPass, emailHost } = require('./configs/emailConfig')
 const fs = require('fs')
 
 
 const sendEmail = csv => {
 
+  console.log("info for the email:", email, emailPass, emailHost)
+  
     const transporter = nodemailer.createTransport({
-      host: EMAILHOST,
+      host: emailHost,
       secure: true, // use TLS
       port: 465,
         auth: {
-            user: EMAIL,
-            pass: EMAILPASS
+            user: email,
+            pass: emailPass
         },
         tls: {
           // do not fail on invalid certs

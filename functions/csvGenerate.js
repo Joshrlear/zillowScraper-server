@@ -3,7 +3,10 @@ const { sendEmail } = require('./sendEmail')
 const fs = require('fs')
 
 
-const csvGenerate = data => {
+const csvGenerate = (data, context) => {
+
+    console.log('inside csvGenerate:', data)
+
     const info = Object.entries(data).map(listing => listing[1])
 
     const fields = [
@@ -23,12 +26,14 @@ const csvGenerate = data => {
 
     const csv = json2csvParser.parse(info)
 
-    fs.writeFile(
+    Promise.resolve(
+        fs.writeFile(
         './destination.csv',                    // save file as
         csv,                                    // file data
         () => sendEmail('./destination.csv')    // after saved send email
-    )
-
+    ))
+    .then(() => context.close())                // scrape complete, close page
+    .catch(() => { return })
 }
 
 module.exports = {
