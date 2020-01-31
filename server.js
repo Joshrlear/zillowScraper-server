@@ -27,6 +27,7 @@ let browserPromise = puppeteer.launch({
     '--no-sandbox',
     '--disable-setuid-sandbox',
   ],
+  ignoreDefaultArgs: ['--disable-extensions'],
   headless: true
 })
 
