@@ -37,7 +37,7 @@ const csvGenerate = (data, context) => {
 }
 
 process.on('unhandledRejection', (reason, p) => {
-    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    console.log('Unhandled Rejection in csvGenerate at:', p, 'reason:', reason);
     // application specific logging, throwing an error, or other logic here
 })
 

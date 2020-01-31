@@ -130,7 +130,7 @@ const scraper = (page, url, context) => {
             return
         }
         else {
-            console.log('Unhandled Rejection:', reason.message)
+            console.log('Unhandled Rejection in scraper at:', reason.message)
             return
         }
 
