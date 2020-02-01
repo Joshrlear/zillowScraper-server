@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer-extra')
 require('dotenv').config()
 
 
-const { token } = require('./configs/2captchaConfig')
+const { token } = require('../configs/2captchaConfig')
 const { scraper } = require('./scraper')
 
 
