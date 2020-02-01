@@ -24,7 +24,8 @@ puppeteer.use(
 // creating one Chrome instance and reusing
 let browserPromise = puppeteer.launch({
   args: [
-    '--no-sandbox'
+    '--no-sandbox',
+    '--disable-setuid-sandbox'
   ],
   headless: true
 })
