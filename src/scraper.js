@@ -38,6 +38,10 @@ const scraper = (page, url, context) => {
         for (link of allLinks) {
 
             await page.goto(link, {waituntil: 'domcontentloaded'})
+                .catch(err => console.error({
+                    "DevMessage": "Error when navigating to links",
+                    "ErrorMessage": err.message
+                }))
         }
 
         return
@@ -80,7 +84,7 @@ const scraper = (page, url, context) => {
   
                     // get all listings links for page
                     links.push(await page.$$eval(
-                            '.list-card-info', 
+                            '.list-card-info > a', 
                             e => e.map(link => link.href))
                     )
   

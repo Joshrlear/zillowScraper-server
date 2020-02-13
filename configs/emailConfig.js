@@ -1,5 +1,7 @@
+require('dotenv').config()
+
 module.exports = {
-    email:      process.env.EMAIL_EMAIL,
-    emailPass:  process.env.EMAIL_EMAILPASS,
-    emailHost:  process.env.EMAIL_EMAILHOST
+    email:      process.env.EMAIL,
+    emailPass:  process.env.EMAILPASS,
+    emailHost:  process.env.EMAILHOST
 }

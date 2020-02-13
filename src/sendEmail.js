@@ -5,7 +5,7 @@ const fs = require('fs')
 
 const sendEmail = csv => {
 
-  console.log("info for the email:", email, emailPass, emailHost)
+  //console.log("info for the email:", email, emailPass, emailHost)
   
     const transporter = nodemailer.createTransport({
       host: emailHost,
